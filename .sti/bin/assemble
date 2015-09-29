@@ -74,9 +74,22 @@ fi
 # directory for later deployment
 copy_artifacts "deployments"
 
-echo " Veer - Custom Code"
-echo ${WAR_FILE_URL}
-curl -o ${DEPLOY_DIR}/ROOT.war -O ${WAR_FILE_URL}
+echo "JARED - Added Custom Code"
+
+#from https://github.com/VeerMuchandi/eap6-bin-deploy/blob/master/.sti/bin/assemble
+#echo ${WAR_FILE_URL}
+#curl -o ${DEPLOY_DIR}/ROOT.war -O ${WAR_FILE_URL}
+
+#from https://github.com/sabre1041/jboss-eap-packaged-builder/blob/3.0/.sti/bin/assemble
+if [ ! -z "${SRC_APP_URL}" ]; then
+ 
+ SRC_APP_NAME=${SRC_APP_NAME:-"ROOT.war"}
+ 
+ echo "Downloading packaged application source from ${SRC_APP_URL}..."
+ 
+ curl -L -fs -o "${DEPLOY_DIR}/${SRC_APP_NAME}" "${SRC_APP_URL}"
+ 
+fi
 
 if [ -d $LOCAL_SOURCE_DIR/configuration ]; then
   echo "Copying config files from project..."
